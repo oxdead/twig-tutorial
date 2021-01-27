@@ -1,0 +1,76 @@
+
+{% extends "index.html" %}
+
+{% block content %}
+<!-- define that this template extends index.html -->
+<!-- define extending block -->
+<!-- comments can't be placed outside block, because twig is stupid! -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-bordered">
+                <caption style="caption-side: top;">
+                    <strong>{{ name }}</strong> - {{ type }} <em> ({{ owner }}) </em> | {{attribute(_context, 'reg-number')}}
+                </caption>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set counter = 0 %} <!-- set counter -->
+                    {% for member in crew %} <!-- for loop. (inside loops we have access to special variables llike loop.index0) -->
+                    {% set counter = counter + 1 %}
+
+                        <tr
+                            class="
+                                {% if member.status == 'Alive' %} success {% endif %}
+                                {% if member.status == 'Dead' %} danger {% endif %}
+                                {% set items = ['odd', 'even'] %}
+                                {{ cycle(items, loop.index0) }}
+                            ">
+                            <!-- attribute allows to access variables with "-" symbol -->
+                            {# <td> {{ counter }}</td>  #}
+                            <!-- we can also use loop.index here instead of counter var -->
+                            <td> {{ loop.index }}</td>
+                            <!-- or reverse index -->
+                            {# <td> {{ loop.revindex }}</td> #}
+                            <!-- loop.first is true only at first iteration -->
+                            <!-- loop.last is true only at last iteration -->
+                            <!-- loop.length gives total items number -->
+                            <!-- tilde ~ is used for concatenation in Twig -->
+                            <td>
+                                <strong>
+                                    {{member.name}}
+                                    {{ attribute(member, 'reg-number') }}
+                                </strong>
+                            </td>
+                            <td>{{member.role}}</td>
+                            <td>{{member["status"]}}</td>
+                            <td>{{member.notes|upper|reverse }}</td> <!-- apply uppercase and reverse filters -->
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- define the end of block -->
+{% endblock content %}
+
+{% block notice %}
+<!-- override existing stuff with our notice block -->
+<h1>Important notice!</h1>
+<p> 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+
+{% endblock notice %}

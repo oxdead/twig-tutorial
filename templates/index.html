@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+	<head>
+        {% include "header.html" %}
+
+        <!-- embed is similar to include but we can define blocks that override -->
+        {% embed 'header.html' %} {% endembed %}
+
+	</head>
+	<body>
+        <!-- twig doesn't support multiple inheritance -->
+        {% block content %} {% endblock content %}
+        
+        <!-- this block can be overwritten by notice block from crew.html -->
+        {% block notice %}
+        <h1>Something to be overwritten</h1>
+        <p>Something to be overwritten</p>
+
+         {% endblock notice %}
+
+         <div>
+            <!-- this will replace stuff that was declared in grid.html file -->
+            {% embed 'grid.html' %} 
+                {% block col2 %}
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <h2>1</h2>
+                            <p>2</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <h2>3</h2>
+                            <p>4</p>
+                        </div>
+                    </div>
+                {% endblock col2 %}
+            
+            {% endembed %}
+         </div>
+
+        {% include 'footer.html' %}
+
+	</body>
+</html>
